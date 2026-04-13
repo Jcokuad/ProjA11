@@ -35,45 +35,105 @@ class LinkedBinaryTree{
             public:
                 // Wraps a Node* pointer 
                 //(default is nullptr)
-                Position(Node* nd=nullptr); // ToDo
+                Position(Node* nd=nullptr) : node{nd} {};
 
                 // operator (based on node pointer)
-                bool operator==(Position other) const; // ToDo
+                bool operator==(Position other) const {
+                    return node == other.node;
+                }
 
-                bool operator!=(Position other) const; // ToDo
+                bool operator!=(Position other) const {
+                    return node != other.node;
+                }
 
-                bool is_null() const; // ToDo
+                bool is_null() const {
+                    return node == nullptr;
+                }
 
-                bool is_root() const; // ToDo
+                bool is_root() const {
+                    return node->parent == nullptr;
+                }
 
-                bool is_external() const; // ToDo
+                bool is_external() const {
+                    return (node->left == nullptr) && (node->right == nullptr);
+                }
 
-                E& element(); // ToDo
+                E& element() {
+                    return node->element;
+                }
                 
-                const E& element() const; // ToDo
+                const E& element() const {
+                    return node_element;
+                }
 
-                Position parent() const; // ToDo
+                Position parent() const {
+                    return Position(node->parent);
+                }
 
-                Position left() const; // ToDo
+                Position left() const {
+                    return Position(node->left);
+                }
 
-                Position right() const; // ToDo
+                Position right() const {
+                    return Position(node->right);
+                }
                 
-                std::vector<Position> children() const; // ToDo
+                std::vector<Position> children() const {
+                    
+                    std::vector<Position> result;
 
-                int num_children() const; // ToDo
+                    //left child if valid
+                    if (node->left != nullptr) {
+                        result.push_back(Position(node->left));
+                    }
+                    if (node->right != nullptr) {
+                        result.push_back(Position(node->right));
+                    }
+
+                    return result;
+                }
+
+                int num_children() const {
+
+                    int result{0};
+                    if (node->left != nullptr) {
+                        result++;
+                    }
+
+                    if (node->right != nullptr) {
+                        result++;
+                    }
+                    return result;
+                }
 
         };  // end of Position class
         LinkedBinaryTree() = default; //tree with zero nodes
 
-        int size() const; // ToDo
+        int size() const {
+            return sz;
+        }
 
-        bool empty() const; // ToDo
+        bool empty() const {
+            return sz.empty():
+        }
 
-        Position root() const; // ToDo
+        Position root() const {
+            return Position(rt);
+        }
 
-        std::vector<Position> positions() const; // ToDo
+        std::vector<Position> positions() const {
+            std::vector<Position> gather;
+            if (rt) {
+                inorder(Position(rt), gather);
+            }
 
-        void add_root(const E& e=E()); // ToDo
+            return gather;
+        }
+
+        void add_root(const E& e=E()) {
+            rt = new Node(e, nullptr);
+            sz = 1;
+        }
 
         void add_left(Position p, const E& e); // ToDo
 
