@@ -12,28 +12,44 @@ class queue {
 
     public:
         /// return the number of elements currently in the queue
-        int size() const;
+        int size() const {
+            return data.size();
+        }
         
         /// return whether the queue is currently empty
-        bool empty() const;
+        bool empty() const {
+            return data.empty();
+        }
 
         /// return const reference to the first element of the queue
-        const T& front() const;
+        const T& front() const {
+            return data.front();
+        }
 
         /// return live (non-const) reference to the first element of the queue
-        T& front();
+        T& front() {
+            return data.front();
+        }
 
         /// return const reference to the last element of the queue
-        const T& back() const;
+        const T& back() const {
+            return data.back();
+        }
 
         /// return live (non-const) reference to the last element of the queue
-        T& back();
+        T& back() {
+            return data.back();
+        }
 
         /// add an element to the back of the queue
-        void push(const T& elem);
+        void push(const T& elem) {
+            return data.push_back(elem);
+        }
 
         /// remove the first element from the queue
-        void pop();
+        void pop() {
+            return data.pop_front();
+        }
 };
 
 }  // namespace dsac::stackqueue

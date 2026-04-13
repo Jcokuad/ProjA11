@@ -26,33 +26,55 @@ class ArrayQueue {
         
     public:
         /// Construct a new queue with given capacity (default 1000)
-        ArrayQueue(int cap = 1000);
+        ArrayQueue(int cap = 1000) : capacity(cap), data(std::make_unique<T[]>(cap)) {}
 
         /// return number of elements currently in the queue
-        int size() const;
+        int size() const {
+            return sz;
+        }
         
         /// return whether the queue is currently empty
-        bool empty() const;
+        bool empty() const {
+            return sz == 0;
+        }
 
         /// return const reference to the first element of the queue
-        const T& front() const;
+        const T& front() const {
+            return data[f];
+        }
 
         /// return live (non-const) reference to the first element of the queue
-        T& front();
+        T& front() {
+            return data[f];
+        }
 
         /// return const reference to the last element of the queue
-        const T& back() const;
+        const T& back() const {
+            return data[(f + sz - 1) % capacity];
+        }
 
         /// return live (non-const) reference to the last element of the queue
-        T& back();
+        T& back() {
+            return data[(f + sz - 1) % capacity];
+        }
 
         /// add element to the end of the queue
         /// @param elem the new element
         /// @throw overflow_error if queue is already at full capacity
-        void push(const T& elem);
+        void push(const T& elem) {
+            if (size() == capacity) {
+                throw std::overflow_error("Queue overflow");
+            }
+            int avail{(f + sz) % capacity}; // next available index
+            data[avail] = elem;
+            sz++;
+        }
 
         /// remove the first element from the queue
-        void pop();
+        void pop() {
+            f = (f + 1) % capacity;
+            sz--;
+        }
 };
 
 }  // namespace dsac::stackqueue
