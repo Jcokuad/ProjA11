@@ -26,7 +26,7 @@ void postorder(Position p, Container& visited) {
     visited.push_back(p); // Then visit the root (post-order)
 }
 
-
+// container stores the result
 template <typename Position, typename Container>
 void breadthfirst(Position p, Container& visited) {
     if (!p.is_null()) {
@@ -46,9 +46,29 @@ void breadthfirst(Position p, Container& visited) {
     }
 }
 
-
+// queue stores the traversal result
 template <typename Position>
-std::queue<Position> breadthfirst_2(Position p); // ToDo
+std::queue<Position> breadthfirst_2(Position p) {
+
+    std::queue<Position> res;
+    if (!p.is_null()) {
+        
+        std::queue<Position> fringe;
+        fringe.push(p);
+
+        while (!fringe.empty()) {  // visit all nodes level by level
+            Position curr fringe.front();
+            fringe.pop();
+            res.push_back(curr);
+
+            for (Position c : curr.children()) {
+                fringe.push(c);
+            }
+        }
+    }
+
+    return res;
+}
 
 
 
