@@ -135,32 +135,123 @@ class LinkedBinaryTree{
             sz = 1;
         }
 
-        void add_left(Position p, const E& e); // ToDo
+        void add_left(Position p, const E& e) {
+            auto new_node = new Node{e, p.node};
+            p.node->left = new_node;
+            sz++;
+        }
 
-        void add_right(Position p, const E& e); // ToDo
+        void add_right(Position p, const E& e) {
+            auto new_node = new Node{e. p.node};
+            p.node->right = new node;
+            sz++;
+        }
 
-        void erase(Position p); // ToDo
+        void erase(Position p) {
+            Node* nd = p.node; // actual node pointer
+            Node* child{nd->left == nullptr ? nd->right : nd->left}; // if there is a left child ignore the right child
 
-        void attach(Position p, LinkedBinaryTree& left, LinkedBinaryTree& right); // ToDo
+            // one-side link
+            if (child != nullptr) {
+                child->parent = nd->parent;
+            }
+
+            // update node's parent's
+            if (nd == rt) {
+                rt = child;
+            } else if (nd->parent->left == nd) { // left child 
+                nd->parent->left = child;
+            } else {
+                nd->parent->right = child; // right child
+            }
+
+            sz--;
+            delete nd;
+        }
+
+        void attach(Position p, LinkedBinaryTree& left, LinkedBinaryTree& right) {
+            Node* nd = p.node; // Node pointer
+
+            nd->left = left.rt; // left child
+            nd->right = right.rt // right child
+            sz += left.sz + right.sz;
+
+            if (left.rt) {
+                left.rt->parent = nd;
+            } 
+            if (right.rt) {
+                right.rt->parent = nd;
+            }
+
+            // detach dangling node
+            left.rt = right.rt = nullptr;
+            left.sz = right.sz = 0;
+        }
 
     // ------------- Rule-of-five support ----------------
     private:
-        void tear_down(Node* nd); // ToDo
+        void tear_down(Node* nd) {
+            if (nd != nullptr) {
+                tear_down(nd->left);
+                tear_down(nd->right);
+                delete nd;
+            }
+        }
 
-        static Node* clone(Node* model); // ToDo
+        static Node* clone(Node* model) {
+            // creates a tree and does not modify existing, suitable for recursion
+            if (model == nullptr) return nullptr;
+
+            Node* new_root = new Node(model->element);
+            // Recursively clone the left/right subtree
+            // If left/right child exists, set its parent to new root
+            new_root->left = clone(model->left);
+            if (new_root->left) {
+                new_root->left->parent = new_root;
+            }
+
+            new_root->right = clone(model->right);
+            if (new_root->right) {
+                new_root->right->parent = new_root;
+            }
+            
+            // return the newly clone root node
+            return new_root;
+        }
 
     public:
-        ~LinkedBinaryTree(); // ToDo
+        ~LinkedBinaryTree() {
+            tear_down(rt);
+        }
         
         // copy constructor and copy assignment
-        LinkedBinaryTree(const LinkedBinaryTree& other); // ToDo
+        LinkedBinaryTree(const LinkedBinaryTree& other)
+        : sz{other.sz}, rt{clone(other.rt)} {}
 
-        LinkedBinaryTree& operator=(const LinkedBinaryTree& other); // ToDo
+        LinkedBinaryTree& operator=(const LinkedBinaryTree& other) {
+            
+            if (this != &other) {
+                tear_down(rt);
+                rt = clone(other.rt);
+                sz = other.rz;
+            }
+            return *this;
+        }
 
         // move constructor and move assignment
-        LinkedBinaryTree(LinkedBinaryTree&& other); // ToDo
+        LinkedBinaryTree(LinkedBinaryTree&& other) 
+        : sz{other.sz}, rt{other.rt} {
+            other.sz = 0;
+            other.rt = nullptr;
+        }
 
-        LinkedBinaryTree& operator=(LinkedBinaryTree&& other); // ToDo
+        LinkedBinaryTree& operator=(LinkedBinaryTree&& other) {
+            if (this != &other) {
+                std::swap(sz, other.sz);
+                std::swap(rt, other.rt);
+            }
+            return *this;
+        }
 
     // Assignment
     public:
