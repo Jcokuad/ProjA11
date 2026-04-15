@@ -63,7 +63,7 @@ class LinkedBinaryTree{
                 }
                 
                 const E& element() const {
-                    return node_element;
+                    return node->element;
                 }
 
                 Position parent() const {
@@ -114,7 +114,7 @@ class LinkedBinaryTree{
         }
 
         bool empty() const {
-            return sz.empty():
+            return sz.empty();
         }
 
         Position root() const {
@@ -142,8 +142,8 @@ class LinkedBinaryTree{
         }
 
         void add_right(Position p, const E& e) {
-            auto new_node = new Node{e. p.node};
-            p.node->right = new node;
+            auto new_node = new Node{e, p.node};
+            p.node->right = new_node;
             sz++;
         }
 
@@ -173,7 +173,7 @@ class LinkedBinaryTree{
             Node* nd = p.node; // Node pointer
 
             nd->left = left.rt; // left child
-            nd->right = right.rt // right child
+            nd->right = right.rt; // right child
             sz += left.sz + right.sz;
 
             if (left.rt) {
@@ -260,9 +260,10 @@ class LinkedBinaryTree{
         int count_left_leaves(Position p) const {
             int count = 0;
 
-            int (p.is_null()) {
+            if (p.is_null()) {
                 return 0;
             }
+
             // if there is a left child and it is a leaf, then increment count
             if (!p.left().is_null() && p.left().is_external()) {
                 count++;

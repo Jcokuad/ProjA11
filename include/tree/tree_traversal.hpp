@@ -35,7 +35,7 @@ void breadthfirst(Position p, Container& visited) {
         fringe.push(p);
 
         while (!fringe.empty()) {  // visit all nodes level by level
-            Position curr fringe.front();
+            Position curr = fringe.front();
             fringe.pop();
             visited.push_back(curr);
 
@@ -57,7 +57,7 @@ std::queue<Position> breadthfirst_2(Position p) {
         fringe.push(p);
 
         while (!fringe.empty()) {  // visit all nodes level by level
-            Position curr fringe.front();
+            Position curr = fringe.front();
             fringe.pop();
             res.push_back(curr);
 
