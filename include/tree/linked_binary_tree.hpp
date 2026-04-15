@@ -252,11 +252,65 @@ class LinkedBinaryTree{
             }
             return *this;
         }
-
+    
     // Assignment
-    public:
-        int count_left_leaves() const; // ToDo
+    private:
+        // since the count_left_leaves function does not take a parameter its better to make a private helper function that takes Position as
+        // a parameter to do the recursion, then call it in the public function starting from the root.
+        int count_left_leaves(Position p) const {
+            int count = 0;
 
-        int count_left_leaves_bfs() const; // ToDo
+            int (p.is_null()) {
+                return 0;
+            }
+            // if there is a left child and it is a leaf, then increment count
+            if (!p.left().is_null() && p.left().is_external()) {
+                count++;
+            }
+
+            // implement recursion with left and right subtrees of current node
+            count += count_left_leaves(p.left());
+            count += count_left_leaves(p.right());
+
+            return count;
+        }
+    public:
+        //count nodes that are leaves in a binary tree and that are the left child of their respective parent. The root is not counted.
+        int count_left_leaves() const {     // ToDo
+            return count_left_leaves(root());  // call the helper function
+        }
+
+        int count_left_leaves_bfs() const { // ToDo (use beadth first search)
+            int count = 0;
+            if (root() == nullptr) { 
+                return 0;
+            }
+
+            // track the current node inside the queue
+            std::queue<Position> q;
+            q.push(root());
+
+            // check if the left child is a leaf node, then continue bfs with left and right subtrees from curr node
+            while (!q.empty()) {
+                Position curr = q.front();
+                q.pop();
+
+                Position right = curr.right(); // store the current left and right children of the node
+                Position left = curr.left();
+
+                if (!left.is_null() && left.is_external()) {
+                    count++;
+                }
+
+                if (!left.is_null()) { // enqueue left child
+                    q.push(left);
+                }
+                if (!right.is_null()) {  // enqueue right child
+                    q.push(right);
+                }
+            }
+
+            return count;
+        }
 };
 }
