@@ -114,7 +114,7 @@ class LinkedBinaryTree{
         }
 
         bool empty() const {
-            return sz.empty();
+            return sz == 0;
         }
 
         Position root() const {
